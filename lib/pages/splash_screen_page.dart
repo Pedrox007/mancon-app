@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mancon_app/models/user.dart';
+import 'package:mancon_app/state/logged_user.dart';
 import 'package:mancon_app/widgets/splash_screen_widget.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreenPage extends StatefulWidget {
   const SplashScreenPage({super.key});
@@ -28,7 +31,14 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
       });
 
       await Future.delayed(const Duration(seconds: 2), () {
-        Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
+        User? user = Provider.of<LoggedUser>(context, listen: false).user;
+
+        if (user != null) {
+          Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
+        } else {
+          Navigator.pushNamedAndRemoveUntil(
+              context, "/login", (route) => false);
+        }
       });
     });
   }

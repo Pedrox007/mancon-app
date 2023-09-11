@@ -7,9 +7,9 @@ class UiConfig {
 
   static ThemeData get theme => ThemeData(
         colorScheme: const ColorScheme(
-          primary: Color.fromARGB(255, 250, 244, 211),
-          secondary: Color.fromARGB(255, 0, 70, 67),
-          surface: Color(0xFF0C1618),
+          primary: Color.fromRGBO(255, 145, 77, 1),
+          secondary: Colors.white,
+          surface: Color.fromRGBO(66, 67, 71, 0.5),
           background: Color.fromRGBO(66, 67, 71, 1),
           error: Color.fromARGB(255, 255, 75, 75),
           onPrimary: Color.fromARGB(255, 0, 70, 67),
