@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mancon_app/pages/home_page.dart';
 import 'package:mancon_app/pages/login_page.dart';
 import 'package:mancon_app/pages/splash_screen_page.dart';
+import 'package:mancon_app/state/expense_list.dart';
 import 'package:mancon_app/state/logged_user.dart';
 import 'package:mancon_app/themes/styles.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +20,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => LoggedUser())],
+      providers: [
+        ChangeNotifierProvider(create: (context) => LoggedUser()),
+        ChangeNotifierProvider(create: (context) => ExpenseList())
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: UiConfig.theme,

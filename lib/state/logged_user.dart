@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mancon_app/models/user.dart';
+import 'package:mancon_app/utils/mocked_data.dart';
 
 class LoggedUser with ChangeNotifier {
   User? _user;
@@ -14,10 +15,11 @@ class LoggedUser with ChangeNotifier {
 
   void setMockedUser({String username = "teste"}) {
     if (username.isEmpty) {
-      _user = User.fromMap({"username": "teste"});
+      _user = MockData().user;
     } else {
-      _user = User.fromMap({"username": username});
+      _user = User.fromMap({"id": 1, "username": username});
     }
+    notifyListeners();
   }
 
   void logout() {
