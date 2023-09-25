@@ -9,7 +9,7 @@ class ExpenseList with ChangeNotifier {
     return _expenses.toList();
   }
 
-  List<Expense> expenseByType(int typeId) {
+  List<Expense> getExpensesByType(int typeId) {
     return _expenses.where((element) => element.typeId == typeId).toList();
   }
 
@@ -17,24 +17,28 @@ class ExpenseList with ChangeNotifier {
     double sum = _expenses.fold(
         0,
         (previousValue, element) =>
-            previousValue.toDouble() + element.amountSpent);
+            previousValue.toDouble() + element.totalPrice!);
 
     return sum;
   }
 
   double getAmmountByExpenseType(int typeId) {
-    double sum = _expenses.fold(
+    double sum = getExpensesByType(typeId).fold(
         0,
         (previousValue, element) =>
-            previousValue.toDouble() + element.typeId == typeId
-                ? element.amountSpent
-                : 0);
+            previousValue.toDouble() + element.totalPrice!);
 
     return sum;
   }
 
   void setMockedExpenses() {
-    _expenses = MockData().expenses;
+    _expenses = MockData().expenses.toList();
+    notifyListeners();
+  }
+
+  void setExpenses(List<Expense> expenses) {
+    _expenses = expenses;
+    notifyListeners();
   }
 
   void addExpense(Expense expense) {

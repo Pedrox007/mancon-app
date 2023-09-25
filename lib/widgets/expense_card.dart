@@ -13,7 +13,9 @@ class ExpenseCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: GestureDetector(
-        onTap: () {},
+        onTap: () {
+          Navigator.pushNamed(context, "/expenses", arguments: type);
+        },
         child: Container(
           decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.background,

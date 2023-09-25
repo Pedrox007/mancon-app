@@ -1,3 +1,3 @@
-double formatToMoney(double value) {
-  return double.parse(value.toStringAsFixed(2));
+String formatToMoney(double value) {
+  return value.toStringAsFixed(2);
 }

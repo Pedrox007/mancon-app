@@ -7,58 +7,73 @@ class MockData {
   List<Expense> expenses = [
     Expense.fromMap({
       "id": 1,
-      "typeId": 1,
+      "type_id": 1,
       "description": "teste 1",
-      "amount_spent": 100.0,
+      "quantity": 1.0,
+      "unit_price": 101.0,
+      "shipping_price": 10.0,
       "owner": 1
     }),
     Expense.fromMap({
       "id": 2,
-      "typeId": 2,
+      "type_id": 2,
       "description": "teste 2",
-      "amount_spent": 100.0,
+      "quantity": 1.0,
+      "unit_price": 102.0,
+      "shipping_price": 10.0,
       "owner": 1
     }),
     Expense.fromMap({
       "id": 3,
-      "typeId": 3,
+      "type_id": 3,
       "description": "teste 3",
-      "amount_spent": 100.0,
+      "quantity": 4.0,
+      "unit_price": 103.0,
+      "shipping_price": 10.0,
       "owner": 1
     }),
     Expense.fromMap({
       "id": 4,
-      "typeId": 4,
+      "type_id": 4,
       "description": "teste 4",
-      "amount_spent": 100.0,
+      "quantity": 1.0,
+      "unit_price": 104.0,
+      "shipping_price": 10.0,
       "owner": 1
     }),
     Expense.fromMap({
       "id": 5,
-      "typeId": 5,
+      "type_id": 5,
       "description": "teste 5",
-      "amount_spent": 100.0,
+      "quantity": 1.0,
+      "unit_price": 105.0,
       "owner": 1
     }),
     Expense.fromMap({
       "id": 6,
-      "typeId": 6,
+      "type_id": 6,
       "description": "teste 6",
-      "amount_spent": 100.0,
+      "quantity": 1.0,
+      "unit_price": 106.0,
+      "shipping_price": 0.0,
       "owner": 1
     }),
     Expense.fromMap({
       "id": 7,
-      "typeId": 1,
+      "type_id": 1,
       "description": "teste 7",
-      "amount_spent": 100.0,
+      "quantity": 1.0,
+      "unit_price": 107.0,
+      "shipping_price": 20.0,
       "owner": 1
     }),
     Expense.fromMap({
       "id": 8,
-      "typeId": 2,
+      "type_id": 2,
       "description": "teste 8",
-      "amount_spent": 100.0,
+      "quantity": 2.0,
+      "unit_price": 108.0,
+      "shipping_price": 10.0,
       "owner": 1
     })
   ];

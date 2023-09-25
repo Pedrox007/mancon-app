@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mancon_app/pages/expenses_page.dart';
 import 'package:mancon_app/pages/home_page.dart';
 import 'package:mancon_app/pages/login_page.dart';
 import 'package:mancon_app/pages/splash_screen_page.dart';
@@ -25,15 +26,15 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => ExpenseList())
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: UiConfig.theme,
-        initialRoute: '/',
-        routes: <String, WidgetBuilder>{
-          "/": (context) => const SplashScreenPage(),
-          "/home": (context) => const HomePage(title: "Page"),
-          "/login": (context) => const LoginPage(),
-        },
-      ),
+          title: 'Flutter Demo',
+          theme: UiConfig.theme,
+          initialRoute: '/',
+          routes: <String, WidgetBuilder>{
+            "/": (context) => const SplashScreenPage(),
+            "/home": (context) => const HomePage(),
+            "/login": (context) => const LoginPage(),
+            "/expenses": (context) => const ExpensesPage()
+          }),
     );
   }
 }
