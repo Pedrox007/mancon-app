@@ -3,6 +3,7 @@ import 'package:mancon_app/pages/expenses_page.dart';
 import 'package:mancon_app/pages/home_page.dart';
 import 'package:mancon_app/pages/login_page.dart';
 import 'package:mancon_app/pages/splash_screen_page.dart';
+import 'package:mancon_app/pages/user_details_page.dart';
 import 'package:mancon_app/state/expense_list.dart';
 import 'package:mancon_app/state/logged_user.dart';
 import 'package:mancon_app/themes/styles.dart';
@@ -33,7 +34,8 @@ class MyApp extends StatelessWidget {
             "/": (context) => const SplashScreenPage(),
             "/home": (context) => const HomePage(),
             "/login": (context) => const LoginPage(),
-            "/expenses": (context) => const ExpensesPage()
+            "/expenses": (context) => const ExpensesPage(),
+            "/user-details": (context) => const UserDetailsPage(),
           }),
     );
   }

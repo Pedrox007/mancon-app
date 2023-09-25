@@ -34,7 +34,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
               padding: const EdgeInsets.only(left: 50, top: 8),
               child: Text(
                 type.name,
-                style: const TextStyle(fontFamily: "inter", fontSize: 15),
+                style: const TextStyle(fontFamily: "inter", fontSize: 18),
               ),
             )
           ],

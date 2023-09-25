@@ -3,7 +3,13 @@ import 'package:mancon_app/models/expense_type.dart';
 import 'package:mancon_app/models/user.dart';
 
 class MockData {
-  User user = User.fromMap({"id": 1, "username": "teste"});
+  User user = User.fromMap({
+    "id": 1,
+    "username": "teste",
+    "email": "teste@teste.com",
+    "first_name": "Pedro",
+    "last_name": "Vicente"
+  });
   List<Expense> expenses = [
     Expense.fromMap({
       "id": 1,

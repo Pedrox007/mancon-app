@@ -5,7 +5,6 @@ class Button extends StatelessWidget {
   final VoidCallback onPressed;
   final double? width;
   final double? height;
-  final IconData? icon;
   final Color? buttonColor;
   final Color? labelColor;
   final bool secondary;
@@ -16,7 +15,6 @@ class Button extends StatelessWidget {
       required this.onPressed,
       this.width,
       this.height,
-      this.icon,
       this.buttonColor,
       this.labelColor,
       this.secondary = false});
@@ -31,12 +29,10 @@ class Button extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(25),
-              side: secondary
-                  ? BorderSide(color: Theme.of(context).colorScheme.secondary)
-                  : BorderSide.none,
+              side: BorderSide.none,
             ),
             backgroundColor: secondary
-                ? Theme.of(context).colorScheme.secondary
+                ? Theme.of(context).colorScheme.background
                 : Theme.of(context).colorScheme.primary,
             elevation: 2,
           ),
@@ -48,19 +44,9 @@ class Button extends StatelessWidget {
                   fontSize: 18,
                   fontFamily: "Inter",
                   fontWeight: FontWeight.bold,
-                  color: secondary
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context).colorScheme.secondary,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
-              ),
-              const SizedBox(width: 10),
-              Icon(
-                icon,
-                color: secondary
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).colorScheme.secondary,
-                size: 23,
-              ),
+              )
             ],
           )),
     );

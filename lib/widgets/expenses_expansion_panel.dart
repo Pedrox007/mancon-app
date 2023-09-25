@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mancon_app/utils/format_to_money.dart';
+import 'package:mancon_app/widgets/line_card.dart';
 
 class ExpensesExpansionPanel extends StatelessWidget {
   final List expensesList;
@@ -12,12 +13,7 @@ class ExpensesExpansionPanel extends StatelessWidget {
       child: ListView.builder(
           itemCount: expensesList.length,
           itemBuilder: (context, i) {
-            return Card(
-              color: Theme.of(context).colorScheme.background,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  side:
-                      BorderSide(color: Theme.of(context).colorScheme.primary)),
+            return LineCard(
               child: ExpansionTile(
                 title: Row(
                   children: [

@@ -31,7 +31,6 @@ class _LoginPageState extends State<LoginPage> {
           padding: const EdgeInsets.only(left: 30, right: 30),
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          color: Theme.of(context).colorScheme.background,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
