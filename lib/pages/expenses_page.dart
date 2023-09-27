@@ -65,7 +65,9 @@ class _ExpensesPageState extends State<ExpensesPage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: 5,
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, "/expense-add", arguments: type.id);
+        },
         child: const Icon(Icons.add, size: 35),
       ),
     );

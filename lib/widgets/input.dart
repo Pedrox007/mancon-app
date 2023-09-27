@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Input extends StatelessWidget {
   final String label;
@@ -9,6 +10,7 @@ class Input extends StatelessWidget {
   final TextInputType type;
   final bool obscureText;
   final ValueNotifier<bool> _obscureTextVN;
+  final List<TextInputFormatter>? inputFormatters;
 
   Input(
       {Key? key,
@@ -18,7 +20,8 @@ class Input extends StatelessWidget {
       this.disabled = false,
       this.controller,
       required this.type,
-      this.obscureText = false})
+      this.obscureText = false,
+      this.inputFormatters})
       : _obscureTextVN = ValueNotifier<bool>(obscureText),
         assert(
           obscureText == true ? suffixIcon == null : true,
@@ -32,6 +35,7 @@ class Input extends StatelessWidget {
         valueListenable: _obscureTextVN,
         builder: (_, obscureTextValue, child) {
           return TextField(
+            inputFormatters: inputFormatters,
             obscureText: obscureTextValue,
             keyboardType: type,
             readOnly: disabled,
@@ -51,11 +55,8 @@ class Input extends StatelessWidget {
                 fontFamily: "Inter",
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                gapPadding: 2,
-                borderSide: BorderSide(
-                    color: Theme.of(context).colorScheme.secondary, width: 1),
-              ),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  borderSide: BorderSide(style: BorderStyle.none)),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 gapPadding: 5,
