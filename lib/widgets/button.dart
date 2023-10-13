@@ -8,16 +8,19 @@ class Button extends StatelessWidget {
   final Color? buttonColor;
   final Color? labelColor;
   final bool secondary;
+  final bool loading;
 
-  const Button(
-      {super.key,
-      required this.label,
-      required this.onPressed,
-      this.width,
-      this.height,
-      this.buttonColor,
-      this.labelColor,
-      this.secondary = false});
+  const Button({
+    super.key,
+    required this.label,
+    required this.onPressed,
+    this.width,
+    this.height,
+    this.buttonColor,
+    this.labelColor,
+    this.secondary = false,
+    this.loading = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,19 +39,23 @@ class Button extends StatelessWidget {
                 : Theme.of(context).colorScheme.primary,
             elevation: 2,
           ),
-          child: Wrap(
-            children: [
-              Text(
-                label.toUpperCase(),
-                style: TextStyle(
-                  fontSize: 18,
-                  fontFamily: "Inter",
-                  fontWeight: FontWeight.bold,
+          child: loading
+              ? CircularProgressIndicator(
                   color: Theme.of(context).colorScheme.secondary,
-                ),
-              )
-            ],
-          )),
+                )
+              : Wrap(
+                  children: [
+                    Text(
+                      label.toUpperCase(),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontFamily: "Inter",
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    )
+                  ],
+                )),
     );
   }
 }

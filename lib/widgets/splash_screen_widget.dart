@@ -6,8 +6,13 @@ class SplashScreenWidget extends StatelessWidget {
 
   final double textOpacity;
 
+  final bool loading;
+
   const SplashScreenWidget(
-      {super.key, required this.imageSize, required this.textOpacity});
+      {super.key,
+      required this.imageSize,
+      required this.textOpacity,
+      required this.loading});
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +38,10 @@ class SplashScreenWidget extends StatelessWidget {
               style: TextStyle(fontFamily: "Righteous", fontSize: 20),
             ),
           ),
+          const SizedBox(
+            height: 40,
+          ),
+          if (loading) const CircularProgressIndicator(),
         ],
       ),
     );

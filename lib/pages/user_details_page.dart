@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mancon_app/models/user.dart';
 import 'package:mancon_app/state/logged_user.dart';
+import 'package:mancon_app/utils/secure_storage.dart';
 import 'package:mancon_app/widgets/button.dart';
 import 'package:mancon_app/widgets/line_card.dart';
 import 'package:provider/provider.dart';
@@ -92,6 +93,9 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
               Button(
                 label: "Sair",
                 onPressed: () {
+                  SecureStorage storage = SecureStorage();
+                  storage.deleteSecureData("access_token");
+                  storage.deleteSecureData("refresh_token");
                   Provider.of<LoggedUser>(context, listen: false).logout();
                   Navigator.of(context)
                       .pushNamedAndRemoveUntil("/login", (_) => false);

@@ -1,8 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:mancon_app/models/user.dart';
+import 'package:mancon_app/services/user_service.dart';
 import 'package:mancon_app/state/logged_user.dart';
+import 'package:mancon_app/utils/secure_storage.dart';
 import 'package:mancon_app/widgets/button_icon.dart';
 import 'package:mancon_app/widgets/input.dart';
 import 'package:mancon_app/widgets/logo.dart';
+import 'package:mancon_app/widgets/notification_message.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -15,12 +22,50 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final usernameEC = TextEditingController();
   final passwordEC = TextEditingController();
+  bool loading = false;
 
-  void _confirmLogin(BuildContext context) {
-    Provider.of<LoggedUser>(context, listen: false)
-        .setMockedUser(username: usernameEC.text);
+  void _confirmLogin(BuildContext context) async {
+    setState(() {
+      loading = true;
+    });
 
-    Navigator.of(context).pushNamedAndRemoveUntil("/home", (_) => false);
+    UserService service = UserService();
+    SecureStorage storage = SecureStorage();
+    http.Response responseToken =
+        await service.getToken(usernameEC.text, passwordEC.text);
+
+    if (responseToken.statusCode == 200) {
+      var body = jsonDecode(responseToken.body);
+      storage.writeSecureData("access_token", body["access"]);
+      storage.writeSecureData("refresh_token", body["refresh"]);
+      service.updateAuthorization(await storage.readSecureData("access_token"));
+
+      http.Response responseUser = await service.getUser();
+      if (responseUser.statusCode == 200) {
+        var json = jsonDecode(responseUser.body);
+        User loggedUser = User.fromMap(json);
+        Provider.of<LoggedUser>(context, listen: false).setUser(loggedUser);
+        Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
+      } else {
+        NotificationMessage().showNotification(
+            message:
+                "Erro! Não foi possível capturar dados do usuário. Tente novamente.",
+            context: context,
+            error: true);
+        passwordEC.clear();
+      }
+    } else {
+      NotificationMessage().showNotification(
+        message: "Erro! Usuário ou senha estão incorretos. Tente novamente.",
+        context: context,
+        error: true,
+      );
+      passwordEC.clear();
+    }
+
+    setState(() {
+      loading = false;
+    });
   }
 
   @override
@@ -53,6 +98,7 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 40),
               ButtonIcon(
                 label: "Entrar",
+                loading: loading,
                 onPressed: () {
                   _confirmLogin(context);
                 },

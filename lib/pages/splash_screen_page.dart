@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:mancon_app/models/user.dart';
+import 'package:mancon_app/services/user_service.dart';
 import 'package:mancon_app/state/logged_user.dart';
 import 'package:mancon_app/widgets/splash_screen_widget.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +18,7 @@ class SplashScreenPage extends StatefulWidget {
 class _SplashScreenPageState extends State<SplashScreenPage> {
   double imageSize = 150;
   double textOpacity = 0;
+  bool loading = false;
 
   @override
   void initState() {
@@ -30,11 +35,24 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
         });
       });
 
-      await Future.delayed(const Duration(seconds: 2), () {
-        User? user = Provider.of<LoggedUser>(context, listen: false).user;
+      Future.delayed(const Duration(seconds: 3), () async {
+        setState(() {
+          loading = true;
+        });
 
-        if (user != null) {
-          Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
+        UserService service = UserService();
+
+        bool success = await service.renewToken();
+
+        if (success) {
+          http.Response response = await service.getUser();
+          if (response.statusCode == 200) {
+            var json = jsonDecode(response.body);
+            User loggedUser = User.fromMap(json);
+            Provider.of<LoggedUser>(context, listen: false).setUser(loggedUser);
+            Navigator.pushNamedAndRemoveUntil(
+                context, "/home", (route) => false);
+          }
         } else {
           Navigator.pushNamedAndRemoveUntil(
               context, "/login", (route) => false);
@@ -48,9 +66,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SplashScreenWidget(
-        imageSize: imageSize,
-        textOpacity: textOpacity,
-      ),
+          imageSize: imageSize, textOpacity: textOpacity, loading: loading),
     );
   }
 }
