@@ -9,10 +9,13 @@ class BaseAPI {
       const String.fromEnvironment("MANCON_API_BASE_URL", defaultValue: "");
   Map<String, String> headers = {"Content-Type": "application/json"};
 
-  Uri getURL(String endpointURL, int? id) {
+  Uri getURL(String endpointURL, int? id, Map<String, dynamic>? queryParams) {
     String idLookup = id != null ? id.toString() : "";
 
-    return Uri.parse(baseURL + endpointURL + idLookup);
+    Uri url = Uri.parse(baseURL + endpointURL + idLookup)
+        .replace(queryParameters: queryParams);
+
+    return url;
   }
 
   Future<bool> renewToken() async {
@@ -22,7 +25,7 @@ class BaseAPI {
     var body = jsonEncode({"refresh": refreshToken});
 
     http.Response response = await http.post(
-        getURL(Endpoints.tokenRefresh, null),
+        getURL(Endpoints.tokenRefresh, null, null),
         body: body,
         headers: headers);
 
@@ -49,7 +52,11 @@ class BaseAPI {
       bool refreshSuccess = await renewToken();
 
       if (refreshSuccess) {
-        response = await method(url, body: body, headers: headers);
+        if (body != null) {
+          response = await method(url, body: body, headers: headers);
+        } else {
+          response = await method(url, headers: headers);
+        }
       }
     }
 

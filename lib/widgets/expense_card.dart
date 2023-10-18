@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:mancon_app/models/expense_type.dart';
 import 'package:mancon_app/utils/format_to_money.dart';
+import 'package:mancon_app/widgets/skeleton_loading_text.dart';
 
 class ExpenseCard extends StatelessWidget {
   final ExpenseType type;
   final double totalAmmount;
+  final bool loading;
 
   const ExpenseCard(
-      {super.key, required this.type, required this.totalAmmount});
+      {super.key,
+      required this.type,
+      required this.totalAmmount,
+      this.loading = false});
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +48,12 @@ class ExpenseCard extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              Text(
-                "R\$ ${formatToMoney(totalAmmount).toString()}",
-                style: const TextStyle(fontFamily: "inter", fontSize: 20),
-              )
+              loading
+                  ? const SkeletonLoadingText(width: 100, height: 23)
+                  : Text(
+                      "R\$ ${formatToMoney(totalAmmount).toString()}",
+                      style: const TextStyle(fontFamily: "inter", fontSize: 20),
+                    )
             ],
           ),
         ),

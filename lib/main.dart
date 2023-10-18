@@ -6,6 +6,7 @@ import 'package:mancon_app/pages/login_page.dart';
 import 'package:mancon_app/pages/splash_screen_page.dart';
 import 'package:mancon_app/pages/user_details_page.dart';
 import 'package:mancon_app/state/expense_list.dart';
+import 'package:mancon_app/state/expense_type_list.dart';
 import 'package:mancon_app/state/logged_user.dart';
 import 'package:mancon_app/themes/styles.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => LoggedUser()),
-        ChangeNotifierProvider(create: (context) => ExpenseList())
+        ChangeNotifierProvider(create: (context) => ExpenseList()),
+        ChangeNotifierProvider(create: (context) => ExpenseTypeList()),
       ],
       child: MaterialApp(
           title: 'Flutter Demo',

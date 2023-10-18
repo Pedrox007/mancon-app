@@ -19,6 +19,8 @@ dependencies:
   http: ^1.1.0
   flutter_secure_storage: ^9.0.0
   another_flushbar: ^1.12.30
+  skeleton_text: ^3.0.1
+  custom_refresh_indicator: ^2.2.1
 
 dev_dependencies:
   flutter_test:

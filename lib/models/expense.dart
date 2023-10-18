@@ -36,13 +36,13 @@ class Expense {
   factory Expense.fromMap(Map<String, dynamic> map) {
     return Expense(
       id: map["id"]?.toInt(),
-      typeId: map["type_id"],
+      typeId: map["type"]["id"],
       description: map["description"],
       totalPrice: map["total_price"],
-      owner: map["owner"],
-      quantity: map["quantity"],
-      unitPrice: map["unit_price"],
-      shippingPrice: map["shipping_price"] ?? 0.0,
+      owner: map["owner"]["id"],
+      quantity: double.parse(map["quantity"]),
+      unitPrice: double.parse(map["unit_price"]),
+      shippingPrice: double.parse(map["shipping_price"]),
     );
   }
 

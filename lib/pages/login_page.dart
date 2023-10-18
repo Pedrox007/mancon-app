@@ -48,10 +48,11 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
       } else {
         NotificationMessage().showNotification(
-            message:
-                "Erro! Não foi possível capturar dados do usuário. Tente novamente.",
-            context: context,
-            error: true);
+          message:
+              "Erro! Não foi possível capturar dados do usuário. Tente novamente.",
+          context: context,
+          error: true,
+        );
         passwordEC.clear();
       }
     } else {
