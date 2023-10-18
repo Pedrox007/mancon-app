@@ -2,10 +2,11 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 class NotificationMessage {
-  Future<dynamic> showNotification(
-      {bool error = false,
-      required String message,
-      required BuildContext context}) {
+  Future<dynamic> showNotification({
+    bool error = false,
+    required String message,
+    required BuildContext context,
+  }) {
     return Flushbar(
       icon: error ? const Icon(Icons.warning) : const Icon(Icons.check),
       message: message,

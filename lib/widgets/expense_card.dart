@@ -8,11 +8,12 @@ class ExpenseCard extends StatelessWidget {
   final double totalAmmount;
   final bool loading;
 
-  const ExpenseCard(
-      {super.key,
-      required this.type,
-      required this.totalAmmount,
-      this.loading = false});
+  const ExpenseCard({
+    super.key,
+    required this.type,
+    required this.totalAmmount,
+    this.loading = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +24,12 @@ class ExpenseCard extends StatelessWidget {
         },
         child: Container(
           decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-              border: Border.all(color: Theme.of(context).colorScheme.primary)),
+            color: Theme.of(context).colorScheme.background,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(10),
+            ),
+            border: Border.all(color: Theme.of(context).colorScheme.primary),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,

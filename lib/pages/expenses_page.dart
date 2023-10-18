@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mancon_app/models/expense_type.dart';
 import 'package:mancon_app/state/expense_list.dart';
+import 'package:mancon_app/utils/format_to_money.dart';
 import 'package:mancon_app/widgets/expenses_expansion_panel.dart';
 import 'package:provider/provider.dart';
 
@@ -49,11 +50,15 @@ class _ExpensesPageState extends State<ExpensesPage> {
               padding: const EdgeInsets.all(25),
               child: Center(
                 child: Text(
-                    "R\$ ${Provider.of<ExpenseList>(context, listen: true).getAmmountByExpenseType(type.id!)}",
-                    style: const TextStyle(
-                      fontFamily: "Inter",
-                      fontSize: 30,
-                    )),
+                  "R\$ ${formatToMoney(
+                    Provider.of<ExpenseList>(context, listen: true)
+                        .getAmmountByExpenseType(type.id!),
+                  )}",
+                  style: const TextStyle(
+                    fontFamily: "Inter",
+                    fontSize: 30,
+                  ),
+                ),
               ),
             ),
             ExpensesExpansionPanel(
@@ -68,7 +73,11 @@ class _ExpensesPageState extends State<ExpensesPage> {
         onPressed: () {
           Navigator.pushNamed(context, "/expense-add", arguments: type.id);
         },
-        child: const Icon(Icons.add, size: 35),
+        child: Icon(
+          Icons.add,
+          size: 35,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
       ),
     );
   }

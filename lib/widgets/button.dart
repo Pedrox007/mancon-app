@@ -28,34 +28,35 @@ class Button extends StatelessWidget {
       width: width ?? MediaQuery.of(context).size.width,
       height: height ?? 55,
       child: ElevatedButton(
-          onPressed: onPressed,
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
-              side: BorderSide.none,
-            ),
-            backgroundColor: secondary
-                ? Theme.of(context).colorScheme.background
-                : Theme.of(context).colorScheme.primary,
-            elevation: 2,
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+            side: BorderSide.none,
           ),
-          child: loading
-              ? CircularProgressIndicator(
-                  color: Theme.of(context).colorScheme.secondary,
-                )
-              : Wrap(
-                  children: [
-                    Text(
-                      label.toUpperCase(),
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontFamily: "Inter",
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                    )
-                  ],
-                )),
+          backgroundColor: secondary
+              ? Theme.of(context).colorScheme.background
+              : Theme.of(context).colorScheme.primary,
+          elevation: 2,
+        ),
+        child: loading
+            ? CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.secondary,
+              )
+            : Wrap(
+                children: [
+                  Text(
+                    label.toUpperCase(),
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontFamily: "Inter",
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  )
+                ],
+              ),
+      ),
     );
   }
 }

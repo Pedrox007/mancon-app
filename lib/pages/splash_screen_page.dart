@@ -66,7 +66,10 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SplashScreenWidget(
-          imageSize: imageSize, textOpacity: textOpacity, loading: loading),
+        imageSize: imageSize,
+        textOpacity: textOpacity,
+        loading: loading,
+      ),
     );
   }
 }

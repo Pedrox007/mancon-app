@@ -35,19 +35,22 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
               Padding(
                 padding: const EdgeInsets.only(top: 25),
                 child: CircleAvatar(
-                    backgroundColor:
-                        Theme.of(context).colorScheme.primaryContainer,
-                    radius: 65,
-                    child: Icon(
-                      Icons.person_outline,
-                      size: 95,
-                      color: Theme.of(context).colorScheme.secondary,
-                    )),
+                  backgroundColor:
+                      Theme.of(context).colorScheme.primaryContainer,
+                  radius: 65,
+                  child: Icon(
+                    Icons.person_outline,
+                    size: 95,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20),
-                child: Text("${loggedUser.firstName} ${loggedUser.lastName}",
-                    style: const TextStyle(fontFamily: "inter", fontSize: 30)),
+                child: Text(
+                  "${loggedUser.firstName} ${loggedUser.lastName}",
+                  style: const TextStyle(fontFamily: "inter", fontSize: 30),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 30),
@@ -56,14 +59,21 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                     padding: const EdgeInsets.all(10),
                     child: Row(
                       children: [
-                        const Text("Username: ",
-                            style: TextStyle(
-                                fontFamily: "inter",
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold)),
-                        Text(loggedUser.username,
-                            style: const TextStyle(
-                                fontFamily: "inter", fontSize: 18))
+                        const Text(
+                          "Username: ",
+                          style: TextStyle(
+                            fontFamily: "inter",
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          loggedUser.username,
+                          style: const TextStyle(
+                            fontFamily: "inter",
+                            fontSize: 18,
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -76,14 +86,21 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                     padding: const EdgeInsets.all(10),
                     child: Row(
                       children: [
-                        const Text("Email: ",
-                            style: TextStyle(
-                                fontFamily: "inter",
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold)),
-                        Text(loggedUser.email,
-                            style: const TextStyle(
-                                fontFamily: "inter", fontSize: 18))
+                        const Text(
+                          "Email: ",
+                          style: TextStyle(
+                            fontFamily: "inter",
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          loggedUser.email,
+                          style: const TextStyle(
+                            fontFamily: "inter",
+                            fontSize: 18,
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -97,8 +114,10 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                   storage.deleteSecureData("access_token");
                   storage.deleteSecureData("refresh_token");
                   Provider.of<LoggedUser>(context, listen: false).logout();
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil("/login", (_) => false);
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    "/login",
+                    (_) => false,
+                  );
                 },
                 secondary: true,
               )

@@ -3,16 +3,15 @@ import 'package:mancon_app/widgets/logo.dart';
 
 class SplashScreenWidget extends StatelessWidget {
   final double imageSize;
-
   final double textOpacity;
-
   final bool loading;
 
-  const SplashScreenWidget(
-      {super.key,
-      required this.imageSize,
-      required this.textOpacity,
-      required this.loading});
+  const SplashScreenWidget({
+    super.key,
+    required this.imageSize,
+    required this.textOpacity,
+    required this.loading,
+  });
 
   @override
   Widget build(BuildContext context) {

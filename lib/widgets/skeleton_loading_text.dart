@@ -32,7 +32,6 @@ class SkeletonLoadingText extends StatelessWidget {
             ],
             tileMode: TileMode.repeated,
           ),
-          // border: Border.all(color: Colors.white),
         ),
       ),
     );

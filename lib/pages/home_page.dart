@@ -26,7 +26,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final controller = ScrollController();
   double appBarHeight = 200.0;
-  List<ExpenseType> _expensesTypes = [];
+  final List<ExpenseType> _expensesTypes = [];
   bool initialLoading = false;
   bool scrollLoading = false;
 
@@ -106,56 +106,61 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          elevation: 5,
-          onPressed: () {
-            Navigator.pushNamed(context, "/user-details");
-          },
-          child: const Icon(Icons.person_outlined, size: 35),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        elevation: 5,
+        onPressed: () {
+          Navigator.pushNamed(context, "/user-details");
+        },
+        child: Icon(
+          Icons.person_outlined,
+          size: 35,
+          color: Theme.of(context).colorScheme.secondary,
         ),
-        body: Padding(
-          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-          child: CustomRefreshIndicator(
-            onRefresh: () async {
-              setState(() {
-                scrollLoading = true;
-              });
-              await fetchExpenseTypes(context);
-              await fetchExpenses(context);
-              setState(() {
-                scrollLoading = false;
-              });
+      ),
+      body: Padding(
+        padding: EdgeInsets.only(
+          top: MediaQuery.of(context).padding.top,
+        ),
+        child: CustomRefreshIndicator(
+          onRefresh: () async {
+            setState(() {
+              scrollLoading = true;
+            });
+            await fetchExpenseTypes(context);
+            await fetchExpenses(context);
+            setState(() {
+              scrollLoading = false;
+            });
+          },
+          builder: MaterialIndicatorDelegate(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            edgeOffset: 200,
+            builder: (context, controller) {
+              return CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.secondary,
+              );
             },
-            builder: MaterialIndicatorDelegate(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              edgeOffset: 200,
-              builder: (context, controller) {
-                return CircularProgressIndicator(
-                  color: Theme.of(context).colorScheme.secondary,
-                );
-              },
-            ),
-            child: CustomScrollView(
-              controller: controller,
-              slivers: <Widget>[
-                SliverPersistentHeader(
-                  delegate: PersonalSliverHeaderDelegate(
-                    totalAmmount:
-                        Provider.of<ExpenseList>(context, listen: true)
-                            .getAmmountSum(),
-                    loading: initialLoading | scrollLoading,
-                  ),
-                  pinned: true,
-                  floating: true,
+          ),
+          child: CustomScrollView(
+            controller: controller,
+            slivers: <Widget>[
+              SliverPersistentHeader(
+                delegate: PersonalSliverHeaderDelegate(
+                  totalAmmount: Provider.of<ExpenseList>(context, listen: true)
+                      .getAmmountSum(),
+                  loading: initialLoading | scrollLoading,
                 ),
-                SliverPadding(
-                  padding: const EdgeInsets.only(bottom: 80),
-                  sliver: initialLoading
-                      ? SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                              (BuildContext context, int index) {
+                pinned: true,
+                floating: true,
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.only(bottom: 80),
+                sliver: initialLoading
+                    ? SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
                             return Container(
                               padding: const EdgeInsets.only(top: 30),
                               alignment: Alignment.center,
@@ -164,37 +169,41 @@ class _HomePageState extends State<HomePage> {
                                 color: Theme.of(context).colorScheme.secondary,
                               ),
                             );
-                          }, childCount: 1),
-                        )
-                      : SliverGrid(
-                          gridDelegate:
-                              const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 180,
-                            mainAxisSpacing: 10,
-                            crossAxisSpacing: 10,
-                          ),
-                          delegate: SliverChildBuilderDelegate(
-                            (BuildContext context, int index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: ExpenseCard(
-                                  type: _expensesTypes.elementAt(index),
-                                  totalAmmount: Provider.of<ExpenseList>(
-                                          context,
-                                          listen: true)
-                                      .getAmmountByExpenseType(
-                                          _expensesTypes.elementAt(index).id!),
-                                  loading: scrollLoading,
-                                ),
-                              );
-                            },
-                            childCount: _expensesTypes.length,
-                          ),
+                          },
+                          childCount: 1,
                         ),
-                )
-              ],
-            ),
+                      )
+                    : SliverGrid(
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 180,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                        ),
+                        delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: ExpenseCard(
+                                type: _expensesTypes.elementAt(index),
+                                totalAmmount: Provider.of<ExpenseList>(
+                                  context,
+                                  listen: true,
+                                ).getAmmountByExpenseType(
+                                  _expensesTypes.elementAt(index).id!,
+                                ),
+                                loading: scrollLoading,
+                              ),
+                            );
+                          },
+                          childCount: _expensesTypes.length,
+                        ),
+                      ),
+              )
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

@@ -6,7 +6,10 @@ import 'package:mancon_app/utils/endpoints.dart';
 
 class UserService extends BaseAPI {
   Future<http.Response> getToken(String username, String password) async {
-    String body = jsonEncode({"username": username, "password": password});
+    String body = jsonEncode({
+      "username": username,
+      "password": password,
+    });
 
     http.Response response = await super.request(
       http.post,

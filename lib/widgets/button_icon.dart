@@ -30,46 +30,47 @@ class ButtonIcon extends StatelessWidget {
       width: width ?? MediaQuery.of(context).size.width,
       height: height ?? 55,
       child: ElevatedButton(
-          onPressed: onPressed,
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
-              side: secondary
-                  ? BorderSide(color: Theme.of(context).colorScheme.secondary)
-                  : BorderSide.none,
-            ),
-            backgroundColor: secondary
-                ? Theme.of(context).colorScheme.secondary
-                : Theme.of(context).colorScheme.primary,
-            elevation: 2,
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+            side: secondary
+                ? BorderSide(color: Theme.of(context).colorScheme.secondary)
+                : BorderSide.none,
           ),
-          child: loading
-              ? CircularProgressIndicator(
-                  color: Theme.of(context).colorScheme.secondary,
-                )
-              : Wrap(
-                  children: [
-                    Text(
-                      label.toUpperCase(),
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontFamily: "Inter",
-                        fontWeight: FontWeight.bold,
-                        color: secondary
-                            ? Theme.of(context).colorScheme.primary
-                            : Theme.of(context).colorScheme.secondary,
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Icon(
-                      icon,
+          backgroundColor: secondary
+              ? Theme.of(context).colorScheme.secondary
+              : Theme.of(context).colorScheme.primary,
+          elevation: 2,
+        ),
+        child: loading
+            ? CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.secondary,
+              )
+            : Wrap(
+                children: [
+                  Text(
+                    label.toUpperCase(),
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontFamily: "Inter",
+                      fontWeight: FontWeight.bold,
                       color: secondary
                           ? Theme.of(context).colorScheme.primary
                           : Theme.of(context).colorScheme.secondary,
-                      size: 23,
                     ),
-                  ],
-                )),
+                  ),
+                  const SizedBox(width: 10),
+                  Icon(
+                    icon,
+                    color: secondary
+                        ? Theme.of(context).colorScheme.primary
+                        : Theme.of(context).colorScheme.secondary,
+                    size: 23,
+                  ),
+                ],
+              ),
+      ),
     );
   }
 }

@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:mancon_app/models/expense.dart';
 import 'package:mancon_app/models/expense_type.dart';
 import 'package:mancon_app/models/user.dart';
+import 'package:mancon_app/services/expense_service.dart';
 import 'package:mancon_app/state/expense_list.dart';
+import 'package:mancon_app/state/expense_type_list.dart';
 import 'package:mancon_app/state/logged_user.dart';
 import 'package:mancon_app/utils/format_to_money.dart';
 import 'package:mancon_app/utils/mocked_data.dart';
 import 'package:mancon_app/widgets/button.dart';
 import 'package:mancon_app/widgets/input.dart';
+import 'package:mancon_app/widgets/notification_message.dart';
 import 'package:mancon_app/widgets/select_input.dart';
 import 'package:provider/provider.dart';
 
@@ -34,11 +39,15 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
   void initState() {
     super.initState();
 
-    expensesList = MockData().expensesType;
+    expensesList =
+        Provider.of<ExpenseTypeList>(context, listen: false).allExpenseTypes();
     unitPriceEC.addListener(() {
       setState(() {
         unitPriceValue = double.parse(
-            unitPriceEC.text == "" ? "0" : unitPriceEC.text.substring(3));
+          unitPriceEC.text == ""
+              ? "0"
+              : unitPriceEC.text.substring(3).replaceAll(",", ""),
+        );
       });
     });
     quantityEC.addListener(() {
@@ -51,7 +60,7 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
       setState(() {
         shippingPriceValue = double.parse(shippingPriceEC.text == ""
             ? "0"
-            : shippingPriceEC.text.substring(3));
+            : shippingPriceEC.text.substring(3).replaceAll(",", ""));
       });
     });
   }
@@ -62,7 +71,7 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
     return formatToMoney(value);
   }
 
-  void saveExpense() {
+  void saveExpense() async {
     User loggedUser = Provider.of<LoggedUser>(context, listen: false).user!;
     Expense newExpense = Expense(
         typeId: typeId!,
@@ -72,7 +81,19 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
         unitPrice: unitPriceValue,
         shippingPrice: shippingPriceValue);
 
-    Provider.of<ExpenseList>(context, listen: false).addExpense(newExpense);
+    http.Response response =
+        await ExpenseService().createExpense(expense: newExpense.toMap());
+
+    if (response.statusCode == 201) {
+      Provider.of<ExpenseList>(context, listen: false).addExpense(newExpense);
+      Navigator.pop(context);
+    } else {
+      NotificationMessage().showNotification(
+        message: "Erro! Não foi possível salvar o novo gasto.",
+        context: context,
+        error: true,
+      );
+    }
   }
 
   @override
@@ -83,9 +104,12 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: const Text(
+        title: Text(
           "Adicionar gasto",
-          style: TextStyle(fontFamily: "inter", fontSize: 18),
+          style: TextStyle(
+              fontFamily: "inter",
+              fontSize: 18,
+              color: Theme.of(context).colorScheme.secondary),
         ),
       ),
       body: SingleChildScrollView(
@@ -99,7 +123,9 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
                 selection: typeId,
                 options: expensesList!.map((element) {
                   return DropdownMenuEntry(
-                      label: element.name, value: element.id!);
+                    label: element.name,
+                    value: element.id!,
+                  );
                 }).toList(),
               ),
               Padding(
@@ -117,7 +143,11 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
                   type: const TextInputType.numberWithOptions(decimal: true),
                   controller: unitPriceEC,
                   inputFormatters: [
-                    CurrencyTextInputFormatter(decimalDigits: 2, symbol: "R\$ ")
+                    FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]")),
+                    CurrencyTextInputFormatter(
+                      decimalDigits: 2,
+                      symbol: "R\$ ",
+                    ),
                   ],
                 ),
               ),
@@ -127,6 +157,11 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
                   label: "Quantidade",
                   type: const TextInputType.numberWithOptions(decimal: true),
                   controller: quantityEC,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp(r"[0-9]+[.]{0,1}[0-9]*"),
+                    ),
+                  ],
                 ),
               ),
               Padding(
@@ -136,19 +171,27 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
                   type: const TextInputType.numberWithOptions(decimal: true),
                   controller: shippingPriceEC,
                   inputFormatters: [
-                    CurrencyTextInputFormatter(decimalDigits: 2, symbol: "R\$ ")
+                    FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]")),
+                    CurrencyTextInputFormatter(
+                      decimalDigits: 2,
+                      symbol: "R\$ ",
+                    ),
                   ],
                 ),
               ),
               const Padding(
                 padding: EdgeInsets.only(top: 65),
-                child: Text("Total gasto",
-                    style: TextStyle(fontFamily: "inter", fontSize: 25)),
+                child: Text(
+                  "Total gasto",
+                  style: TextStyle(fontFamily: "inter", fontSize: 25),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10),
-                child: Text("R\$ ${getTotalPrice()}",
-                    style: const TextStyle(fontFamily: "inter", fontSize: 35)),
+                child: Text(
+                  "R\$ ${getTotalPrice()}",
+                  style: const TextStyle(fontFamily: "inter", fontSize: 35),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 65),
@@ -167,7 +210,6 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
                       label: "Confirmar",
                       onPressed: () {
                         saveExpense();
-                        Navigator.pop(context);
                       },
                       width: 150,
                     )

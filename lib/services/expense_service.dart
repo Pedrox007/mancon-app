@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:mancon_app/utils/base_api.dart';
 import 'package:mancon_app/utils/endpoints.dart';
@@ -8,8 +10,29 @@ class ExpenseService extends BaseAPI {
 
     http.Response response = await super.request(
       http.get,
-      super.getURL(Endpoints.expenses, null, queryParams),
+      super.getURL(
+        Endpoints.expenses,
+        null,
+        queryParams,
+      ),
       null,
+    );
+
+    return response;
+  }
+
+  Future<http.Response> createExpense(
+      {required Map<String, dynamic> expense}) async {
+    var body = jsonEncode(expense);
+
+    http.Response response = await super.request(
+      http.post,
+      super.getURL(
+        Endpoints.expenses,
+        null,
+        null,
+      ),
+      body,
     );
 
     return response;

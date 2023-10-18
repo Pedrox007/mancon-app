@@ -22,14 +22,13 @@ class Expense {
 
   Map<String, dynamic> toMap() {
     return {
-      "id": id,
       "type_id": typeId,
       "description": description,
       "quantity": quantity,
       "unit_price": unitPrice,
       "shipping_price": shippingPrice,
       "total_price": totalPrice,
-      "owner": owner,
+      "owner_id": owner,
     };
   }
 

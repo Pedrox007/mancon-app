@@ -10,8 +10,9 @@ class LineCard extends StatelessWidget {
     return Card(
       color: Theme.of(context).colorScheme.background,
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: BorderSide(color: Theme.of(context).colorScheme.primary)),
+        borderRadius: BorderRadius.circular(10),
+        side: BorderSide(color: Theme.of(context).colorScheme.primary),
+      ),
       child: child,
     );
   }

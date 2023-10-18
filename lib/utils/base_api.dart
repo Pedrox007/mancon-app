@@ -5,15 +5,20 @@ import 'package:mancon_app/utils/endpoints.dart';
 import 'package:mancon_app/utils/secure_storage.dart';
 
 class BaseAPI {
-  static String baseURL =
-      const String.fromEnvironment("MANCON_API_BASE_URL", defaultValue: "");
-  Map<String, String> headers = {"Content-Type": "application/json"};
+  static String baseURL = const String.fromEnvironment(
+    "MANCON_API_BASE_URL",
+    defaultValue: "",
+  );
+  Map<String, String> headers = {
+    "Content-Type": "application/json",
+  };
 
   Uri getURL(String endpointURL, int? id, Map<String, dynamic>? queryParams) {
     String idLookup = id != null ? id.toString() : "";
 
-    Uri url = Uri.parse(baseURL + endpointURL + idLookup)
-        .replace(queryParameters: queryParams);
+    Uri url = Uri.parse(
+      baseURL + endpointURL + idLookup,
+    ).replace(queryParameters: queryParams);
 
     return url;
   }
@@ -22,12 +27,15 @@ class BaseAPI {
     bool success = false;
     String refreshToken = await SecureStorage().readSecureData("refresh_token");
 
-    var body = jsonEncode({"refresh": refreshToken});
+    var body = jsonEncode({
+      "refresh": refreshToken,
+    });
 
     http.Response response = await http.post(
-        getURL(Endpoints.tokenRefresh, null, null),
-        body: body,
-        headers: headers);
+      getURL(Endpoints.tokenRefresh, null, null),
+      body: body,
+      headers: headers,
+    );
 
     if (response.statusCode == 200) {
       String token = jsonDecode(response.body)["access"];

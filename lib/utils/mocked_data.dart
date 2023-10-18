@@ -81,26 +81,38 @@ class MockData {
       "unit_price": 108.0,
       "shipping_price": 10.0,
       "owner": 1
-    })
+    }),
   ];
   List<ExpenseType> expensesType = [
-    ExpenseType.fromMap(
-        {"id": 1, "name": "Alvenaria", "image_name": "alvenaria_logo.png"}),
+    ExpenseType.fromMap({
+      "id": 1,
+      "name": "Alvenaria",
+      "image_name": "alvenaria_logo.png",
+    }),
     ExpenseType.fromMap({
       "id": 2,
       "name": "Elétrica/Dados",
-      "image_name": "eletrica_dados_logo.png"
+      "image_name": "eletrica_dados_logo.png",
     }),
-    ExpenseType.fromMap(
-        {"id": 3, "name": "Hidráulica", "image_name": "hidraulica_logo.png"}),
-    ExpenseType.fromMap(
-        {"id": 4, "name": "Mão de Obra", "image_name": "mao_obra_logo.png"}),
-    ExpenseType.fromMap(
-        {"id": 5, "name": "Acabamento", "image_name": "acabamento_logo.png"}),
+    ExpenseType.fromMap({
+      "id": 3,
+      "name": "Hidráulica",
+      "image_name": "hidraulica_logo.png",
+    }),
+    ExpenseType.fromMap({
+      "id": 4,
+      "name": "Mão de Obra",
+      "image_name": "mao_obra_logo.png",
+    }),
+    ExpenseType.fromMap({
+      "id": 5,
+      "name": "Acabamento",
+      "image_name": "acabamento_logo.png",
+    }),
     ExpenseType.fromMap({
       "id": 6,
       "name": "Equipamentos",
-      "image_name": "equipamentos_logo.png"
+      "image_name": "equipamentos_logo.png",
     }),
   ];
 }

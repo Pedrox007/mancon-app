@@ -15,18 +15,20 @@ class ExpenseList with ChangeNotifier {
 
   double getAmmountSum() {
     double sum = _expenses.fold(
-        0,
-        (previousValue, element) =>
-            previousValue.toDouble() + element.totalPrice!);
+      0,
+      (previousValue, element) =>
+          previousValue.toDouble() + element.totalPrice!,
+    );
 
     return sum;
   }
 
   double getAmmountByExpenseType(int typeId) {
     double sum = getExpensesByType(typeId).fold(
-        0,
-        (previousValue, element) =>
-            previousValue.toDouble() + element.totalPrice!);
+      0,
+      (previousValue, element) =>
+          previousValue.toDouble() + element.totalPrice!,
+    );
 
     return sum;
   }

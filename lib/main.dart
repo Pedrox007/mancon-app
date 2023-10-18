@@ -20,7 +20,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -30,17 +29,18 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => ExpenseTypeList()),
       ],
       child: MaterialApp(
-          title: 'Flutter Demo',
-          theme: UiConfig.theme,
-          initialRoute: '/',
-          routes: <String, WidgetBuilder>{
-            "/": (context) => const SplashScreenPage(),
-            "/home": (context) => const HomePage(),
-            "/login": (context) => const LoginPage(),
-            "/expenses": (context) => const ExpensesPage(),
-            "/user-details": (context) => const UserDetailsPage(),
-            "/expense-add": (context) => const ExpenseAddPage()
-          }),
+        title: 'Flutter Demo',
+        theme: UiConfig.theme,
+        initialRoute: '/',
+        routes: <String, WidgetBuilder>{
+          "/": (context) => const SplashScreenPage(),
+          "/home": (context) => const HomePage(),
+          "/login": (context) => const LoginPage(),
+          "/expenses": (context) => const ExpensesPage(),
+          "/user-details": (context) => const UserDetailsPage(),
+          "/expense-add": (context) => const ExpenseAddPage()
+        },
+      ),
     );
   }
 }
