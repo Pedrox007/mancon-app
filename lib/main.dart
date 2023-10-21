@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mancon_app/pages/expense_add_page.dart';
+import 'package:mancon_app/pages/expense_edit_page.dart';
 import 'package:mancon_app/pages/expenses_page.dart';
 import 'package:mancon_app/pages/home_page.dart';
 import 'package:mancon_app/pages/login_page.dart';
@@ -38,7 +39,8 @@ class MyApp extends StatelessWidget {
           "/login": (context) => const LoginPage(),
           "/expenses": (context) => const ExpensesPage(),
           "/user-details": (context) => const UserDetailsPage(),
-          "/expense-add": (context) => const ExpenseAddPage()
+          "/expense-add": (context) => const ExpenseAddPage(),
+          "/expense-edit": (context) => const ExpenseEditPage(),
         },
       ),
     );

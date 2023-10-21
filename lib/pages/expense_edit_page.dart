@@ -18,14 +18,14 @@ import 'package:mancon_app/widgets/notification_message.dart';
 import 'package:mancon_app/widgets/select_input.dart';
 import 'package:provider/provider.dart';
 
-class ExpenseAddPage extends StatefulWidget {
-  const ExpenseAddPage({super.key});
+class ExpenseEditPage extends StatefulWidget {
+  const ExpenseEditPage({super.key});
 
   @override
-  State<ExpenseAddPage> createState() => _ExpenseAddPageState();
+  State<ExpenseEditPage> createState() => _ExpenseEditPageState();
 }
 
-class _ExpenseAddPageState extends State<ExpenseAddPage> {
+class _ExpenseEditPageState extends State<ExpenseEditPage> {
   TextEditingController descriptionEC = TextEditingController();
   TextEditingController unitPriceEC = TextEditingController();
   double unitPriceValue = 0;
@@ -35,6 +35,7 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
   double shippingPriceValue = 0;
   List<ExpenseType>? expenseTypesList;
   int? typeId;
+  int? expenseId;
 
   @override
   void initState() {
@@ -74,6 +75,21 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
     });
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    Expense expense = ModalRoute.of(context)?.settings.arguments as Expense;
+    setState(() {
+      descriptionEC.text = expense.description;
+      unitPriceEC.text = formatToMoney(expense.unitPrice);
+      quantityEC.text = expense.quantity.toString();
+      shippingPriceEC.text = formatToMoney(expense.shippingPrice);
+      typeId = expense.typeId;
+      expenseId = expense.id;
+    });
+  }
+
   String getTotalPrice() {
     double value = unitPriceValue * quantityValue + shippingPriceValue;
 
@@ -91,15 +107,17 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
       shippingPrice: shippingPriceValue,
     );
 
-    http.Response response =
-        await ExpenseService().createExpense(expense: expenseToCreate.toMap());
+    http.Response response = await ExpenseService().editExpense(
+      expense: expenseToCreate.toMap(),
+      id: expenseId!,
+    );
 
-    if (response.statusCode == 201) {
-      Expense newExpense = Expense.fromMap(jsonDecode(response.body));
+    if (response.statusCode == 200) {
+      Expense expenseEdited = Expense.fromMap(jsonDecode(response.body));
       Provider.of<ExpenseList>(
         context,
         listen: false,
-      ).addExpense(newExpense);
+      ).updateExpense(expenseEdited);
       Navigator.pop(context);
     } else {
       NotificationMessage().showNotification(
@@ -112,14 +130,12 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
 
   @override
   Widget build(BuildContext context) {
-    typeId = ModalRoute.of(context)?.settings.arguments as int;
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: Text(
-          "Adicionar gasto",
+          "Editar gasto",
           style: TextStyle(
               fontFamily: "inter",
               fontSize: 18,

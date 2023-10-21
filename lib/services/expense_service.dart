@@ -39,6 +39,25 @@ class ExpenseService extends BaseAPI {
     return response;
   }
 
+  Future<http.Response> editExpense({
+    required Map<String, dynamic> expense,
+    required int id,
+  }) async {
+    var body = jsonEncode(expense);
+
+    http.Response response = await super.request(
+      http.patch,
+      super.getURL(
+        Endpoints.expenses,
+        id,
+        null,
+      ),
+      body,
+    );
+
+    return response;
+  }
+
   Future<http.Response> deleteExpense({required int id}) async {
     http.Response response = await super.request(
       http.delete,

@@ -8,9 +8,13 @@ class ExpensesExpansionPanel extends StatelessWidget {
   final List expensesList;
 
   final void Function(Expense) onDeletion;
+  final void Function(Expense) onEdition;
 
   const ExpensesExpansionPanel(
-      {super.key, required this.expensesList, required this.onDeletion});
+      {super.key,
+      required this.expensesList,
+      required this.onDeletion,
+      required this.onEdition});
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +56,7 @@ class ExpensesExpansionPanel extends StatelessWidget {
                 SlidableAction(
                   spacing: 12,
                   onPressed: (context) {
-                    print("item para editar");
+                    onEdition(expensesList[i]);
                   },
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   icon: Icons.edit,

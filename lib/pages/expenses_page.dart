@@ -110,10 +110,16 @@ class _ExpensesPageState extends State<ExpensesPage> {
               ),
             ),
             ExpensesExpansionPanel(
-              expensesList: Provider.of<ExpenseList>(context, listen: true)
-                  .getExpensesByType(type.id!),
-              onDeletion: confirmDeletion,
-            )
+                expensesList: Provider.of<ExpenseList>(context, listen: true)
+                    .getExpensesByType(type.id!),
+                onDeletion: confirmDeletion,
+                onEdition: (Expense expense) {
+                  Navigator.pushNamed(
+                    context,
+                    "/expense-edit",
+                    arguments: expense,
+                  );
+                })
           ],
         ),
       ),
