@@ -22,6 +22,7 @@ dependencies:
   skeleton_text: ^3.0.1
   custom_refresh_indicator: ^2.2.1
   flutter_slidable: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
@@ -52,3 +53,9 @@ flutter:
           weight: 700
         - asset: assets/fonts/Inter-Black.ttf
           weight: 900
+
+flutter_icons:
+  image_path: "assets/images/logo.png"
+  android: true
+  ios: true
+  adaptive_icon_background: "assets/images/logo_background.png"
