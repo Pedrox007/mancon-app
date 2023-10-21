@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +12,6 @@ import 'package:mancon_app/state/expense_list.dart';
 import 'package:mancon_app/state/expense_type_list.dart';
 import 'package:mancon_app/state/logged_user.dart';
 import 'package:mancon_app/utils/format_to_money.dart';
-import 'package:mancon_app/utils/mocked_data.dart';
 import 'package:mancon_app/widgets/button.dart';
 import 'package:mancon_app/widgets/input.dart';
 import 'package:mancon_app/widgets/notification_message.dart';
@@ -73,7 +74,7 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
 
   void saveExpense() async {
     User loggedUser = Provider.of<LoggedUser>(context, listen: false).user!;
-    Expense newExpense = Expense(
+    Expense expenseToCreate = Expense(
         typeId: typeId!,
         description: descriptionEC.text,
         owner: loggedUser.id!,
@@ -82,10 +83,14 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
         shippingPrice: shippingPriceValue);
 
     http.Response response =
-        await ExpenseService().createExpense(expense: newExpense.toMap());
+        await ExpenseService().createExpense(expense: expenseToCreate.toMap());
 
     if (response.statusCode == 201) {
-      Provider.of<ExpenseList>(context, listen: false).addExpense(newExpense);
+      Expense newExpense = Expense.fromMap(jsonDecode(response.body));
+      Provider.of<ExpenseList>(
+        context,
+        listen: false,
+      ).addExpense(newExpense);
       Navigator.pop(context);
     } else {
       NotificationMessage().showNotification(
@@ -145,6 +150,7 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]")),
                     CurrencyTextInputFormatter(
+                      locale: "pt_BR",
                       decimalDigits: 2,
                       symbol: "R\$ ",
                     ),
@@ -173,6 +179,7 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]")),
                     CurrencyTextInputFormatter(
+                      locale: "pt_BR",
                       decimalDigits: 2,
                       symbol: "R\$ ",
                     ),
@@ -189,7 +196,7 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Text(
-                  "R\$ ${getTotalPrice()}",
+                  getTotalPrice(),
                   style: const TextStyle(fontFamily: "inter", fontSize: 35),
                 ),
               ),

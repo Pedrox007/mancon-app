@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 String formatToMoney(double value) {
-  return value.toStringAsFixed(2);
+  return NumberFormat.currency(locale: "pt_BR", symbol: "R\$").format(value);
 }

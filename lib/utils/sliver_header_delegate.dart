@@ -114,7 +114,7 @@ class PersonalSliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                     child: loading
                         ? const SkeletonLoadingText(width: 160, height: 35)
                         : Text(
-                            "R\$ ${formatToMoney(totalAmmount)}",
+                            formatToMoney(totalAmmount),
                             style: TextStyle(
                               fontFamily: "Inter",
                               fontSize: _minAmmountSize >

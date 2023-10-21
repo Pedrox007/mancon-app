@@ -14,11 +14,13 @@ class BaseAPI {
   };
 
   Uri getURL(String endpointURL, int? id, Map<String, dynamic>? queryParams) {
-    String idLookup = id != null ? id.toString() : "";
+    String idLookup = id != null ? "${id.toString()}/" : "";
 
     Uri url = Uri.parse(
       baseURL + endpointURL + idLookup,
-    ).replace(queryParameters: queryParams);
+    ).replace(
+      queryParameters: queryParams,
+    );
 
     return url;
   }

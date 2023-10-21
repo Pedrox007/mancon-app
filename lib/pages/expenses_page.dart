@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:mancon_app/models/expense.dart';
 import 'package:mancon_app/models/expense_type.dart';
+import 'package:mancon_app/services/expense_service.dart';
 import 'package:mancon_app/state/expense_list.dart';
 import 'package:mancon_app/utils/format_to_money.dart';
+import 'package:mancon_app/widgets/confirmation_dialog.dart';
 import 'package:mancon_app/widgets/expenses_expansion_panel.dart';
+import 'package:mancon_app/widgets/notification_message.dart';
 import 'package:provider/provider.dart';
 
 class ExpensesPage extends StatefulWidget {
@@ -13,6 +18,49 @@ class ExpensesPage extends StatefulWidget {
 }
 
 class _ExpensesPageState extends State<ExpensesPage> {
+  void confirmDeletion(Expense expense) async {
+    int id = expense.id!;
+    String description = expense.description;
+    double totalPrice = expense.totalPrice!;
+
+    if (await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ConfirmationDialog(
+            title: "Remover gasto",
+            message:
+                "Você tem certeza que deseja remover o gasto '$description' de ${formatToMoney(totalPrice)}?",
+            cancelAction: () {
+              Navigator.of(context).pop(false);
+            },
+            confirmAction: () {
+              Navigator.of(context).pop(true);
+            });
+      },
+    )) {
+      http.Response response = await ExpenseService().deleteExpense(id: id);
+
+      if (response.statusCode == 204) {
+        Provider.of<ExpenseList>(
+          context,
+          listen: false,
+        ).removeExpenseById(id);
+        NotificationMessage().showNotification(
+          message:
+              "O gasto '$description' de ${formatToMoney(totalPrice)} foi removido.",
+          context: context,
+        );
+      } else {
+        NotificationMessage().showNotification(
+          message:
+              "Erro! Não foi possível remover o gasto '${expense.description}' de ${formatToMoney(expense.totalPrice!)}.",
+          context: context,
+          error: true,
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     ExpenseType type =
@@ -50,10 +98,10 @@ class _ExpensesPageState extends State<ExpensesPage> {
               padding: const EdgeInsets.all(25),
               child: Center(
                 child: Text(
-                  "R\$ ${formatToMoney(
+                  formatToMoney(
                     Provider.of<ExpenseList>(context, listen: true)
                         .getAmmountByExpenseType(type.id!),
-                  )}",
+                  ),
                   style: const TextStyle(
                     fontFamily: "Inter",
                     fontSize: 30,
@@ -62,8 +110,10 @@ class _ExpensesPageState extends State<ExpensesPage> {
               ),
             ),
             ExpensesExpansionPanel(
-                expensesList: Provider.of<ExpenseList>(context, listen: true)
-                    .getExpensesByType(type.id!))
+              expensesList: Provider.of<ExpenseList>(context, listen: true)
+                  .getExpensesByType(type.id!),
+              onDeletion: confirmDeletion,
+            )
           ],
         ),
       ),

@@ -55,7 +55,7 @@ class ExpenseCard extends StatelessWidget {
               loading
                   ? const SkeletonLoadingText(width: 100, height: 23)
                   : Text(
-                      "R\$ ${formatToMoney(totalAmmount).toString()}",
+                      formatToMoney(totalAmmount).toString(),
                       style: const TextStyle(fontFamily: "inter", fontSize: 20),
                     )
             ],

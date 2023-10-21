@@ -34,9 +34,10 @@ class Button extends StatelessWidget {
             borderRadius: BorderRadius.circular(25),
             side: BorderSide.none,
           ),
-          backgroundColor: secondary
-              ? Theme.of(context).colorScheme.background
-              : Theme.of(context).colorScheme.primary,
+          backgroundColor: buttonColor ??
+              (secondary
+                  ? Theme.of(context).colorScheme.background
+                  : Theme.of(context).colorScheme.primary),
           elevation: 2,
         ),
         child: loading
