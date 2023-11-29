@@ -14,6 +14,18 @@ class UserDetailsPage extends StatefulWidget {
 }
 
 class _UserDetailsPageState extends State<UserDetailsPage> {
+  void logoutUser() {
+    SecureStorage storage = SecureStorage();
+    storage.deleteSecureData("access_token");
+    storage.deleteSecureData("refresh_token");
+    storage.deleteSecureData("password");
+    Provider.of<LoggedUser>(context, listen: false).logout();
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      "/login",
+      (_) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     User loggedUser = Provider.of<LoggedUser>(context, listen: false).user!;
@@ -109,16 +121,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
               const Spacer(),
               Button(
                 label: "Sair",
-                onPressed: () {
-                  SecureStorage storage = SecureStorage();
-                  storage.deleteSecureData("access_token");
-                  storage.deleteSecureData("refresh_token");
-                  Provider.of<LoggedUser>(context, listen: false).logout();
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    "/login",
-                    (_) => false,
-                  );
-                },
+                onPressed: logoutUser,
                 secondary: true,
               )
             ],

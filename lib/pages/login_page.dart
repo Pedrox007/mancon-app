@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:local_auth/local_auth.dart';
 import 'package:mancon_app/models/user.dart';
 import 'package:mancon_app/services/user_service.dart';
 import 'package:mancon_app/state/logged_user.dart';
@@ -24,7 +25,49 @@ class _LoginPageState extends State<LoginPage> {
   final passwordEC = TextEditingController();
   bool loading = false;
 
-  void _confirmLogin(BuildContext context) async {
+  @override
+  void initState() {
+    super.initState();
+
+    _getUsername();
+    _checkPassword();
+  }
+
+  void _getUsername() async {
+    SecureStorage storage = SecureStorage();
+
+    String username = await storage.readSecureData("username");
+
+    if (username != "") {
+      usernameEC.text = username;
+    }
+  }
+
+  void _checkPassword() async {
+    SecureStorage storage = SecureStorage();
+    LocalAuthentication localAuthentication = LocalAuthentication();
+
+    String password = await storage.readSecureData("password");
+
+    if (password != "") {
+      bool isBiometricAvailable = await localAuthentication.canCheckBiometrics;
+      bool isDeviceSupported = await localAuthentication.isDeviceSupported();
+
+      if (isBiometricAvailable && isDeviceSupported) {
+        bool isAuthenticated = await localAuthentication.authenticate(
+          localizedReason: "Autenticação utilizando biometria",
+        );
+
+        if (isAuthenticated) {
+          passwordEC.text = password;
+
+          _confirmLogin();
+        }
+      }
+    }
+  }
+
+  void _confirmLogin() async {
     setState(() {
       loading = true;
     });
@@ -44,6 +87,8 @@ class _LoginPageState extends State<LoginPage> {
       if (responseUser.statusCode == 200) {
         var json = jsonDecode(responseUser.body);
         User loggedUser = User.fromMap(json);
+        storage.writeSecureData("username", loggedUser.username);
+        storage.writeSecureData("password", passwordEC.text);
         Provider.of<LoggedUser>(context, listen: false).setUser(loggedUser);
         Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
       } else {
@@ -100,9 +145,7 @@ class _LoginPageState extends State<LoginPage> {
               ButtonIcon(
                 label: "Entrar",
                 loading: loading,
-                onPressed: () {
-                  _confirmLogin(context);
-                },
+                onPressed: _confirmLogin,
                 icon: Icons.login,
               )
             ],
