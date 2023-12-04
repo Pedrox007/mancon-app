@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
@@ -13,8 +16,9 @@ import 'package:mancon_app/state/expense_type_list.dart';
 import 'package:mancon_app/state/logged_user.dart';
 import 'package:mancon_app/utils/format_to_money.dart';
 import 'package:mancon_app/widgets/button.dart';
+import 'package:mancon_app/widgets/file_input.dart';
 import 'package:mancon_app/widgets/input.dart';
-import 'package:mancon_app/widgets/notification_message.dart';
+import 'package:mancon_app/utils/notification_message.dart';
 import 'package:mancon_app/widgets/select_input.dart';
 import 'package:provider/provider.dart';
 
@@ -36,6 +40,11 @@ class _ExpenseEditPageState extends State<ExpenseEditPage> {
   List<ExpenseType>? expenseTypesList;
   int? typeId;
   int? expenseId;
+  File? file;
+  String? fileCurrentUrl;
+  String? fileType;
+  String? fileId;
+  bool fileEdited = false;
 
   @override
   void initState() {
@@ -87,6 +96,9 @@ class _ExpenseEditPageState extends State<ExpenseEditPage> {
       shippingPriceEC.text = formatToMoney(expense.shippingPrice);
       typeId = expense.typeId;
       expenseId = expense.id;
+      fileId = expense.voucherFileId;
+      fileType = expense.voucherFileType;
+      fileCurrentUrl = expense.voucherFileURL;
     });
   }
 
@@ -94,6 +106,18 @@ class _ExpenseEditPageState extends State<ExpenseEditPage> {
     double value = unitPriceValue * quantityValue + shippingPriceValue;
 
     return formatToMoney(value);
+  }
+
+  void onFileSelected(File selectedFile, String type) {
+    file = selectedFile;
+    fileType = type;
+    fileEdited = true;
+  }
+
+  void onFileRemoved() {
+    file = null;
+    fileType = null;
+    fileEdited = true;
   }
 
   void saveExpense() async {
@@ -109,6 +133,11 @@ class _ExpenseEditPageState extends State<ExpenseEditPage> {
 
     http.Response response = await ExpenseService().editExpense(
       expense: expenseToCreate.toMap(),
+      voucherFile: file,
+      voucherFileId: fileId,
+      voucherFileType: fileType,
+      voucherFileEdited: fileEdited,
+      voucherCurrentFileUrl: fileCurrentUrl,
       id: expenseId!,
     );
 
@@ -148,15 +177,32 @@ class _ExpenseEditPageState extends State<ExpenseEditPage> {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              SelectInput(
-                label: "Tipo",
-                selection: typeId,
-                options: expenseTypesList!.map((element) {
-                  return DropdownMenuEntry(
-                    label: element.name,
-                    value: element.id!,
-                  );
-                }).toList(),
+              const Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: Text(
+                  "Total gasto",
+                  style: TextStyle(fontFamily: "inter", fontSize: 25),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Text(
+                  getTotalPrice(),
+                  style: const TextStyle(fontFamily: "inter", fontSize: 35),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 30),
+                child: SelectInput(
+                  label: "Tipo",
+                  selection: typeId,
+                  options: expenseTypesList!.map((element) {
+                    return DropdownMenuEntry(
+                      label: element.name,
+                      value: element.id!,
+                    );
+                  }).toList(),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20),
@@ -211,18 +257,12 @@ class _ExpenseEditPageState extends State<ExpenseEditPage> {
                   ],
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(top: 65),
-                child: Text(
-                  "Total gasto",
-                  style: TextStyle(fontFamily: "inter", fontSize: 25),
-                ),
-              ),
               Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Text(
-                  getTotalPrice(),
-                  style: const TextStyle(fontFamily: "inter", fontSize: 35),
+                padding: const EdgeInsets.only(top: 20),
+                child: FileInput(
+                  onSelected: onFileSelected,
+                  onRemoved: onFileRemoved,
+                  fileAlreadyAttached: fileId != null ? true : false,
                 ),
               ),
               Padding(

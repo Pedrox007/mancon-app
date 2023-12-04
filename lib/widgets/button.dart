@@ -9,6 +9,7 @@ class Button extends StatelessWidget {
   final Color? labelColor;
   final bool secondary;
   final bool loading;
+  final bool disabled;
 
   const Button({
     super.key,
@@ -20,6 +21,7 @@ class Button extends StatelessWidget {
     this.labelColor,
     this.secondary = false,
     this.loading = false,
+    this.disabled = false,
   });
 
   @override
@@ -28,7 +30,7 @@ class Button extends StatelessWidget {
       width: width ?? MediaQuery.of(context).size.width,
       height: height ?? 55,
       child: ElevatedButton(
-        onPressed: onPressed,
+        onPressed: disabled ? null : onPressed,
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
@@ -52,7 +54,9 @@ class Button extends StatelessWidget {
                       fontSize: 18,
                       fontFamily: "Inter",
                       fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: disabled
+                          ? Colors.grey
+                          : Theme.of(context).colorScheme.secondary,
                     ),
                   )
                 ],

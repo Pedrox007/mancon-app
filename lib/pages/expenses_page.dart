@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mancon_app/models/expense.dart';
@@ -7,7 +9,7 @@ import 'package:mancon_app/state/expense_list.dart';
 import 'package:mancon_app/utils/format_to_money.dart';
 import 'package:mancon_app/widgets/confirmation_dialog.dart';
 import 'package:mancon_app/widgets/expenses_expansion_panel.dart';
-import 'package:mancon_app/widgets/notification_message.dart';
+import 'package:mancon_app/utils/notification_message.dart';
 import 'package:provider/provider.dart';
 
 class ExpensesPage extends StatefulWidget {

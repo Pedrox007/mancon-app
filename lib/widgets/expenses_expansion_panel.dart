@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:mancon_app/models/expense.dart';
 import 'package:mancon_app/utils/format_to_money.dart';
+import 'package:mancon_app/widgets/button.dart';
+import 'package:mancon_app/widgets/file_dialog.dart';
 import 'package:mancon_app/widgets/line_card.dart';
 
 class ExpensesExpansionPanel extends StatelessWidget {
@@ -10,11 +12,24 @@ class ExpensesExpansionPanel extends StatelessWidget {
   final void Function(Expense) onDeletion;
   final void Function(Expense) onEdition;
 
-  const ExpensesExpansionPanel(
-      {super.key,
-      required this.expensesList,
-      required this.onDeletion,
-      required this.onEdition});
+  const ExpensesExpansionPanel({
+    super.key,
+    required this.expensesList,
+    required this.onDeletion,
+    required this.onEdition,
+  });
+
+  void showVoucherFile(Expense expense, BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return FileDialog(
+          fileUrl: expense.voucherFileURL!,
+          fileType: expense.voucherFileType!,
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -156,6 +171,19 @@ class ExpensesExpansionPanel extends StatelessWidget {
                             ],
                           ),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20, bottom: 8),
+                          child: Button(
+                            label: "Visualizar comprovante",
+                            height: 45,
+                            onPressed: () {
+                              showVoucherFile(expensesList[i], context);
+                            },
+                            disabled: expensesList[i].voucherFileId != null
+                                ? false
+                                : true,
+                          ),
+                        )
                       ],
                     ),
                   )

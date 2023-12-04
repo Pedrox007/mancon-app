@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -10,7 +12,7 @@ import 'package:mancon_app/utils/secure_storage.dart';
 import 'package:mancon_app/widgets/button_icon.dart';
 import 'package:mancon_app/widgets/input.dart';
 import 'package:mancon_app/widgets/logo.dart';
-import 'package:mancon_app/widgets/notification_message.dart';
+import 'package:mancon_app/utils/notification_message.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {

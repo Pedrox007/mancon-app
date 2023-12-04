@@ -7,7 +7,7 @@
             "type": "dart",
             "program": "lib/main.dart",
             "args": [
-                "--dart-define=MANCON_API_BASE_URL=http://10.0.2.2:8000/",
+                "--dart-define=MANCON_API_BASE_URL=https://085f-187-19-163-204.ngrok-free.app/",
             ]
         },
         {

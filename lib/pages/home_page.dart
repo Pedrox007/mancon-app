@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
@@ -13,7 +15,7 @@ import 'package:mancon_app/state/expense_type_list.dart';
 import 'package:mancon_app/state/logged_user.dart';
 import 'package:mancon_app/utils/sliver_header_delegate.dart';
 import 'package:mancon_app/widgets/expense_card.dart';
-import 'package:mancon_app/widgets/notification_message.dart';
+import 'package:mancon_app/utils/notification_message.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {

@@ -1,4 +1,6 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:mancon_app/firebase_options.dart';
 import 'package:mancon_app/pages/expense_add_page.dart';
 import 'package:mancon_app/pages/expense_edit_page.dart';
 import 'package:mancon_app/pages/expenses_page.dart';
@@ -12,8 +14,12 @@ import 'package:mancon_app/state/logged_user.dart';
 import 'package:mancon_app/themes/styles.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(const MyApp());
 }

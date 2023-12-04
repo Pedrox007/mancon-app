@@ -1,16 +1,22 @@
-# mancon_app
+# Mancon App
 
-A new Flutter project.
+This is a Flutter app for construction expenses managenment.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project connects to a Mancon API instance, so, you need it running. To make Mancon App connects to the instance of [Mancon API](https://github.com/Pedrox007/mancon-back-end), it's necessary configure the above environment variable:
 
-A few resources to get you started if this is your first Flutter project:
+```console
+MANCON_API_BASE_URL=mancon_api_host
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+To run the app, just run the next command:
+```console
+flutter run --dart-define=MANCON_API_BASE_URL=mancon_api_host
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The app also makes connection to an instance of Firebase Storage. So, you need to configure it. To do it, make sure that you have the flutterfire-cli installed and configurated. If you have it, just run the next command:
+```console
+flutterfire configure
+```
+This command will generate the requried files to connect to Firebase Storage, such as the `firebase_options.dart` on `lib` directory.
